@@ -1,4 +1,4 @@
-// similar to how interpreted code works.
+// similar to how transpiled code works.
 // would normally hang browser but now works in the background.
 
 const start = Date.now();
