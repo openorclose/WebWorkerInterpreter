@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Test Web Workers</title>
+</head>
+<body>
+<label>
+    Code:
+    <textarea id = "code" rows="20" cols = "100"></textarea>
+</label>
+<input type = "submit" id = "runCode" value = "run">
+<div id = "presets">
+    Presets:
+    <input type = "button" class = "test" id = "timeout" value = "infinite">
+    <input type = "button" class = "test" id = "setglobal" value = "setglobal (run this before getglobal)">
+    <input type = "button" class = "test" id = "getglobal" value = "getglobal">
+</div>
+<div id = "returns">
+Main takeaway: infinite loops do not hang.
+Results will appear below.
+</div>
+<script>
+    const worker = new Worker("interpreter.js");
+    const returnDiv = document.getElementById("returns");
+    const textArea = document.getElementById("code");
+    worker.postMessage({context: true});
+    worker.onmessage = message => {
+        console.log(message.data);
+        returnDiv.innerHTML+=`<div>Return: ${message.data}</div>`
+    };
+    document.getElementById("runCode").addEventListener("click", () => {
+        worker.postMessage({code: textArea.value});
+        console.log(textArea.value);
+        return false;
+    });
+    document.getElementById("presets").addEventListener("click", (e) => {
+        console.log(e.target);
+        fetch(`test_${e.target.id}.js`).then(response => response.text()).then(script => {
+            console.log(script);
+            textArea.value = script;
+        });
+        return false;
+    });
+</script>
+</body>
+</html>
