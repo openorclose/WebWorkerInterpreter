@@ -1,4 +1,4 @@
-let globals = undefined;
+let global = undefined;
 
 onmessage = ({data: {context, code}}) => {
     if (context) {
