@@ -2,7 +2,7 @@ let global = undefined;
 
 onmessage = ({data: {context, code}}) => {
     if (context) {
-        globals = {
+        global = {
         };
     } else if (code) {
         postMessage(String(eval(code)));
