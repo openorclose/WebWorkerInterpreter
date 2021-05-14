@@ -26,6 +26,9 @@ Results will appear below.
     const textArea = document.getElementById("code");
     worker.postMessage({context: true});
     worker.onmessage = message => {
+        if (message.data === "prompt") {
+            worker.postMessage({prompt: prompt()});
+        }
         console.log(message.data);
         returnDiv.innerHTML+=`<div>Return: ${message.data}</div>`
     };
